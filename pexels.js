@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function hideCard(cardId) {
     const card = document.getElementById(cardId);
     if (card) {
-      card.style.display = "none";
+      card.style.display = "none"; // Imposta la visibilità della card a "none"
     }
   }
 
@@ -72,10 +72,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function displayImages(photos) {
     imageGallery.innerHTML = "";
+    let row;
+    photos.forEach((photo, index) => {
+      if (index % 4 === 0) {
+        // Inizia una nuova riga ogni 4 cards
+        row = document.createElement("div");
+        row.classList.add(
+          "row",
+          "row-cols-1",
+          "row-cols-md-2",
+          "row-cols-lg-4",
+          "g-4"
+        );
+        imageGallery.appendChild(row);
+      }
 
-    photos.forEach((photo) => {
       const card = createCard(photo);
-      imageGallery.appendChild(card);
+      row.appendChild(card);
     });
   }
 
@@ -84,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
     card.classList.add("col-md-4", "card", "mb-4", "shadow-sm");
     card.setAttribute("data-image-id", photo.id);
     card.innerHTML = `
-        <img src="${photo.src.medium}" class="bd-placeholder-img card-img-top" />
+        <img src="${photo.src.medium}" class="bd-placeholder-img card-img-top" style="height: 200px;" />
         <div class="card-body">
           <h5 class="card-title">${photo.photographer}</h5>
           <p class="card-text">
@@ -140,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function getAverageColor(imageSrc, callback) {
-    // Usa una richiesta al server per ottenere il colore medio
+    // Utilizza una richiesta al server per ottenere il colore medio
     fetch(
       `https://your-server.com/get-average-color?imageSrc=${encodeURIComponent(
         imageSrc
